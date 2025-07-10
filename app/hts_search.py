@@ -19,7 +19,8 @@ csv_path = os.path.join(data_dir, "hts.csv")
 index = faiss.read_index(faiss_path)
 df = pd.read_csv(csv_path)
 
-# One input → one embedding
+
+
 def get_embedding(text):
     response = client.embeddings.create(
         input=text,
@@ -27,21 +28,33 @@ def get_embedding(text):
     )
     return np.array(response.data[0].embedding, dtype=np.float32)
 
+
+def safe_str(val):
+    return str(val)
+
 # AI search function
-def search_hts_with_ai(query, k=5):
+def search_hts_with_ai(query, country=None, k=5):
     query_vec = get_embedding(query).reshape(1, -1)
     D, I = index.search(query_vec, k=k)
+    
+    column_2_countries = ["north korea", "cuba"]
 
     matches = []
     for idx in I[0]:
         row = df.iloc[idx]
+        
+        if country and country.lower() in column_2_countries:
+            base_duty = row["Column 2 Rate of Duty"]
+        else:
+            base_duty = row["General Rate of Duty"]
+            
         matches.append({
             "hts_code": row["HTS Number"],
             "description": row["Description"],
-            "base_duty": str(row["General Rate of Duty"]) if pd.notna(row["General Rate of Duty"]) else "Unknown",
-            "special_duty": str(row["Special Rate of Duty"]) if pd.notna(row["Special Rate of Duty"]) else "Unknown",
-            "c2_duty": str(row["Column 2 Rate of Duty"]) if pd.notna(row["Column 2 Rate of Duty"]) else "Unknown",
-            "add_duty": str(row["Additional Duties"]) if pd.notna(row["Additional Duties"]) else "Unknown"
+            "base_duty": safe_str(base_duty),
+            "special_duty": safe_str(row["Special Rate of Duty"]),
+            "c2_duty": safe_str(row["Column 2 Rate of Duty"]),
+            "add_duty": safe_str(row["Additional Duties"])
         })
 
     return matches
