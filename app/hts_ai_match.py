@@ -18,7 +18,7 @@ faiss_path = os.path.join(data_dir, "hts_index.faiss")
 
 descriptions = df["Description"].astype(str).tolist()
 
-# Generate embedding for each description
+
 def get_embedding(text):
     response = client.embeddings.create(
         input=text,
@@ -57,6 +57,7 @@ embeddings = np.vstack(vectors)
 
 # Save FAISS index
 index = faiss.IndexFlatL2(embeddings.shape[1])
+
 index.add(embeddings)
 faiss.write_index(index, faiss_path)
 df.to_csv(csv_path, index=False)

@@ -52,5 +52,5 @@ def calculate_tariff(data: TariffRequest):
         "country": data.country,
         "value": data.value,
         "top_matches": matches,
-        "gpt_duty_breakdown": sanitized_gpt
+
 }
