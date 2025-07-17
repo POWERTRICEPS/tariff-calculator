@@ -2,9 +2,25 @@ import openai
 import os
 from dotenv import load_dotenv
 import json
+import re
 
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "..", ".env"))
 client = openai.OpenAI(api_key=os.getenv("OPENAI_KEY"))
+
+
+
+
+def extract_json(raw):
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        match = re.search(r"\{.*\}", raw, re.DOTALL)
+        if match:
+            try:
+                return json.loads(match.group(0))
+            except:
+                pass
+        return {"error": "Invalid JSON", "raw": raw}
 
 
 def gpt_details(product, hts_code, country, base_duty, value_usd):
@@ -40,9 +56,6 @@ Please:
 
     raw = response.choices[0].message.content
 
-    try:
-        parsed = json.loads(raw)
-    except Exception:
-        parsed = {"error": "Invalid JSON", "raw": raw}
+    parsed = extract_json(raw)
     
     return parsed
