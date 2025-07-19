@@ -42,8 +42,8 @@ Please:
    - other_tariffs_percent
    - total_percent
    - total_duty_usd
+   - duty_breakdown_explanation: a short paragraph explaining why each duty applies or does not apply in this case.
 
-2. Then give a short explanation of each tariff and why it applies or not.
 """
 
     response = client.chat.completions.create(
