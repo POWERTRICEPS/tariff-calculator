@@ -13,6 +13,7 @@ app = FastAPI()
 
 df_hts = pd.read_csv("data/hts.csv", dtype=str).fillna("")
 df_hts.columns = [col.strip() for col in df_hts.columns]
+
 def get_base_duty_for_hts(hts_code: str) -> str:
     match = df_hts[df_hts["HTS Number"].str.strip() == hts_code.strip()]
     if not match.empty:
@@ -57,7 +58,7 @@ def home():
 
 @app.post("/match")
 def match(data: MatchRequest):
-    matches = search_hts_with_ai(data.description, data.country, k=5)
+    matches = search_hts_with_ai(data.description, data.country, k=20)
     cleaned_matches = clean_nans(matches)
     return {
         "description": data.description,

@@ -33,7 +33,7 @@ def safe_str(val):
     return str(val)
 
 # AI search function
-def search_hts_with_ai(query, country=None, k=5):
+def search_hts_with_ai(query, country=None, k=20):
     query_vec = get_embedding(query).reshape(1, -1)
     D, I = index.search(query_vec, k=k)
     
