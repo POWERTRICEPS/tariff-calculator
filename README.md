@@ -1,10 +1,10 @@
-#Tariff Calculator – AI-Powered Trade Duty Estimator
-
+# Tariff Calculator – AI-Powered Trade Duty Estimator
+-----------------------------------------------------
 The Tariff Calculator is an AI-powered web application that helps importers and businesses estimate customs duties on products based on their HTS (Harmonized Tariff Schedule) code and country of origin. It combines machine learning, natural language embeddings, and trade rules to provide accurate, real-time duty calculations.
 
 
-##Features
-
+## Features
+------------------------------------------
 - Matches product descriptions to the closest HTS codes using OpenAI embeddings + FAISS vector search
 
 - Returns Column 1 base duty rates, special trade program exemptions, and additional tariffs (e.g., Section 301, steel, aluminum, auto, fentanyl, reciprocal tariffs)
@@ -15,8 +15,8 @@ The Tariff Calculator is an AI-powered web application that helps importers and 
 
 - Designed for scalability as a SaaS product
 
-##How It Works
-
+## How It Works
+----------------------------------------
 - Product Input – User provides a product description and country of origin.
 
 - HTS Code Matching – Description is embedded and compared in a FAISS vector index to find the most relevant HTS codes.
